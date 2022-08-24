@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane minHeight="600.0" minWidth="900.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.equipeglr.Sample2">
+   <children>
+      <Separator prefHeight="12.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0" />
+      <Label fx:id="btnNovo" alignment="CENTER" contentDisplay="TOP" layoutX="14.0" layoutY="14.0" onMouseClicked="#abrirNovo" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Novo (Cntrl + n)">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../Users/RBK/Downloads/Ribbon/src/sample/images/new%20file.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label fx:id="btnAbrir" alignment="CENTER" contentDisplay="TOP" layoutX="114.0" layoutY="14.0" onMouseClicked="#abrirArquivo" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Abrir (Cntrl + o)">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" styleClass="ribbon-item">
+               <image>
+                  <Image url="@../../../../../../../../../Users/RBK/Downloads/Ribbon/src/sample/images/doc.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label fx:id="btnSalvar" alignment="CENTER" contentDisplay="TOP" layoutX="214.0" layoutY="14.0" onMouseClicked="#salvarArquivo" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Salvar (Ctrl + s)">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../Users/RBK/Downloads/Ribbon/src/sample/images/save.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label fx:id="btnCopiar" alignment="CENTER" contentDisplay="TOP" layoutX="314.0" layoutY="14.0" onMouseClicked="#copiarTexto" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Copiar (Ctrl + c)">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../Users/RBK/Downloads/Ribbon/src/sample/images/copy.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label fx:id="btnColar" alignment="CENTER" contentDisplay="TOP" layoutX="414.0" layoutY="14.0" onMouseClicked="#colarTexto" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Colar (Ctrl + v)">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../Users/RBK/Downloads/Ribbon/src/sample/images/paste.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label fx:id="btnRecortar" alignment="CENTER" contentDisplay="TOP" layoutX="514.0" layoutY="14.0" onMouseClicked="#recortarTexto" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Recortar (Ctrl + x)">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../Users/RBK/Downloads/Ribbon/src/sample/images/cut.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label fx:id="btnCompilar" alignment="CENTER" contentDisplay="TOP" layoutX="614.0" layoutY="14.0" onMouseClicked="#compilarArquivo" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Compilar (F7)">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../Users/RBK/Downloads/Ribbon/src/sample/images/find.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label fx:id="btnEquipe" alignment="CENTER" contentDisplay="TOP" layoutX="714.0" layoutY="14.0" onMouseClicked="#mostrarEquipe" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Equipe (F1)">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../Users/RBK/Downloads/Ribbon/src/sample/images/about.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="82.0">
+        <items>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ListView maxWidth="30.0" minWidth="30.0" prefWidth="30.0" HBox.hgrow="ALWAYS" />
+                  <TextArea fx:id="areaCodigo" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <TextArea editable="false" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
