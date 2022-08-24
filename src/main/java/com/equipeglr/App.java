@@ -1,21 +1,13 @@
 package com.equipeglr;
 
-import com.sun.javafx.scene.text.TextLayout;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * JavaFX App
@@ -26,8 +18,12 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent fxml = loadFXML("sample2");
-        scene = new Scene(fxml, 640, 480);
+        scene = new Scene(fxml, 910, 600);
         stage.setScene(scene);
+        stage.setFullScreen(false);
+        stage.minHeightProperty().set(600);
+        stage.minWidthProperty().set(910);
+
         stage.show();
     }
 
