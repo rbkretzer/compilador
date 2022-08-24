@@ -5,22 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1de7ef15-8feb-4924-a07e-e8849b86a279" name="Changes" comment="Inicializada a interface do compilador no git">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/equipeglr/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/equipeglr/FXUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/equipeglr/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/equipeglr/PrimaryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/equipeglr/Sample2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/equipeglr/SecondaryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/primary.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/sample2.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/secondary.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/about.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/copy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/cut.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/doc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/find.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/help.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/image.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/new_file.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/paste.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/pdf.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/redo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/save.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/search.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/undo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/images/web.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/equipeglr/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/equipeglr/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/equipeglr/Sample2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/equipeglr/Sample2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/equipeglr/sample2.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/equipeglr/sample2.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,21 +44,25 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2DoYfSUp7ZnBEnTYhMBB5eZc20J" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "E:/Rafael/Outros/JavaFX/compilador/src/main/resources/com/equipeglr"
+    "last_opened_file_path": "E:/Rafael/Outros/JavaFX/compilador/src/main/resources/com/equipeglr/images"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Rafael\Outros\JavaFX\compilador\src\main\resources\com\equipeglr\images" />
       <recent name="E:\Rafael\Outros\JavaFX\compilador\src\main\resources\com\equipeglr" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -71,6 +78,14 @@
       <option name="presentableId" value="Default" />
       <updated>1661367008842</updated>
     </task>
+    <task id="LOCAL-00001" summary="Inicializada a interface do compilador no git">
+      <created>1661367570477</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1661367570477</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -85,6 +100,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Inicializada a interface do compilador no git" />
     <option name="LAST_COMMIT_MESSAGE" value="Inicializada a interface do compilador no git" />
   </component>
