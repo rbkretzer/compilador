@@ -10,8 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.ZoomEvent;
-import javafx.scene.text.Font;
+import javafx.stage.Window;
 
 public class Sample2 {
 
@@ -24,10 +23,12 @@ public class Sample2 {
     @FXML private Label btnCompilar;
     @FXML private Label btnEquipe;
     @FXML private TextArea areaCodigo;
-    @FXML private ListView linhas;
+    @FXML private ListView<Integer> linhas;
     private static Alert mostraEquipe = new Alert(AlertType.NONE);
 
     public void initialize() {
+        mostraEquipe.setTitle("Equipe");
+        mostraEquipe.setContentText("\t\tGabriel Adriano Rodrigues\n\t\tLeonardo Souza Nunes\n\t\tRafael Barbosa Kreteer");
         linhas.getItems().add(areaCodigo.getParagraphs().size());
         areaCodigo.addEventFilter(ScrollEvent.SCROLL, event -> {
                 if(event.isControlDown()) {
@@ -49,7 +50,9 @@ public class Sample2 {
     }
 
     public void mostrarEquipe(MouseEvent mouseEvent) {
-        this.mostraEquipe.show();
+        Window window = mostraEquipe.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(e -> mostraEquipe.hide());
+        mostraEquipe.show();
     }
 
     public void abrirNovo(MouseEvent mouseEvent) {
@@ -69,21 +72,12 @@ public class Sample2 {
     public void alteraContadorDeLinha(KeyEvent keyEvent) {
 
         if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-            System.out.println("Apertei enter");
-            System.out.println("Adicionando linha: " + areaCodigo.getParagraphs().size());
             linhas.getItems().add(areaCodigo.getParagraphs().size());
         }
         if (keyEvent.getCode().equals(KeyCode.BACK_SPACE) || keyEvent.getCode().equals(KeyCode.DELETE)) {
             if (areaCodigo.getParagraphs().size() != linhas.getItems().size()) {
-                System.out.println("Removendo linha: " + areaCodigo.getParagraphs().size());
                 linhas.getItems().remove(areaCodigo.getParagraphs().size());
             }
         }
-    }
-
-    public void aumentarFonteCodigo(ZoomEvent zoomEvent) {
-        System.out.println(zoomEvent.getTotalZoomFactor());
-        Font novaFonte = new Font(zoomEvent.getZoomFactor());
-        areaCodigo.setFont(novaFonte);
     }
 }
