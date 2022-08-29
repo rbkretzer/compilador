@@ -26,6 +26,7 @@ public class App extends Application {
         stage.minWidthProperty().set(910);
         //InputStream img = new BufferedInputStream(new FileInputStream("terminal.png"));
         //stage.getIcons().add(new Image(img));
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setTitle("Compilador GLR");
         stage.show();
     }

@@ -6,6 +6,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -29,12 +30,12 @@ public class TelaController {
     @FXML private Label btnCompilar;
     @FXML private Label btnEquipe;
     @FXML private TextArea areaCodigo;
-    @FXML private ListView<Integer> linhas;
+    @FXML private ListView<String> linhas;
 
     private static FileChooser ufc = new FileChooser();
 
     public void initialize() {
-        linhas.getItems().add(areaCodigo.getParagraphs().size());
+        linhas.getItems().add(String.valueOf(areaCodigo.getParagraphs().size()));
         ufc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
     }
 
@@ -78,15 +79,23 @@ public class TelaController {
         IntStream.range(0, areaCodigo.getParagraphs().size()).forEach(x -> {
             int linhaAtual = x+1;
             if (linhaAtual > linhasExistentes) {
-                linhas.getItems().add(linhaAtual);
+                linhas.getItems().add(String.valueOf(linhaAtual));
             }
         });
+        redefinirLarguraLista();
     }
 
     private void removerLinhas() {
         int linhasExistentes = areaCodigo.getParagraphs().size();
-        List<Integer> linhaParaRemover = linhas.getItems().stream().filter(l -> l > linhasExistentes).collect(Collectors.toList());
+        List<String> linhaParaRemover = linhas.getItems().stream().filter(l -> Integer.valueOf(l) > linhasExistentes).collect(Collectors.toList());
         linhaParaRemover.forEach(l -> linhas.getItems().remove(l));
+        redefinirLarguraLista();
+    }
+
+    private void redefinirLarguraLista() {
+        String ultimaLinha = linhas.getItems().get(linhas.getItems().size() - 1);
+        linhas.setMinWidth(20 * ultimaLinha.length());
+        linhas.setMaxWidth(20 * ultimaLinha.length());
     }
 
     public void salvarArquivo() throws IOException {
@@ -125,5 +134,10 @@ public class TelaController {
         if (keyEvent.isControlDown() && keyEvent.getCode().equals(KeyCode.S)) {
             salvarArquivo();
         }
+    }
+
+    public void scrollLineList(ScrollEvent scrollEvent) {
+//        double d =scrollEvent.getScreenY() / 12;
+//        linhas.scrollTo(d);
     }
 }

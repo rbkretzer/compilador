@@ -1,0 +1,7 @@
+.list-view .scroll-bar:vertical {
+    -fx-padding: -10; -fx-opacity: 0
+}
+
+.list-view .scroll-bar:horizontal {
+    -fx-padding: -10; -fx-opacity: 0
+}
