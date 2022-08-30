@@ -1,8 +1,11 @@
 package com.equipeglr;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -10,6 +13,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.stage.FileChooser;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -137,7 +142,8 @@ public class TelaController {
     }
 
     public void scrollLineList(ScrollEvent scrollEvent) {
-//        double d =scrollEvent.getScreenY() / 12;
-//        linhas.scrollTo(d);
+        scrollEvent.getScreenY();
+        int i = BigDecimal.valueOf(scrollEvent.getScreenY() / 12).setScale(0, RoundingMode.CEILING).intValue();
+        linhas.scrollTo(i);
     }
 }
