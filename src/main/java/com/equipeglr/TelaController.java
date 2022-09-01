@@ -1,20 +1,8 @@
 package com.equipeglr;
 
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.stage.FileChooser;
-
-import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -22,8 +10,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+
 public class TelaController {
 
+	@FXML private AnchorPane principal;
     @FXML private Label labelStatus;
     @FXML private TextArea areaMensagem;
     @FXML private Label btnNovo;
@@ -107,7 +105,7 @@ public class TelaController {
         if (labelStatus.getText() == null || labelStatus.getText().isEmpty()) {
             criarNovo();
         }
-        if (labelStatus.getText() != null || !labelStatus.getText().isEmpty()) {
+        if (labelStatus.getText() != null && !labelStatus.getText().isEmpty()) {
             FileWriter writer = new FileWriter(labelStatus.getText(), Charset.availableCharsets().get("UTF-8"), false);
             writer.write(areaCodigo.getText());
             writer.close();
@@ -136,14 +134,31 @@ public class TelaController {
                 removerLinhas();
             }
         }
-        if (keyEvent.isControlDown() && keyEvent.getCode().equals(KeyCode.S)) {
-            salvarArquivo();
-        }
     }
-
-    public void scrollLineList(ScrollEvent scrollEvent) {
-        scrollEvent.getScreenY();
-        int i = BigDecimal.valueOf(scrollEvent.getScreenY() / 12).setScale(0, RoundingMode.CEILING).intValue();
-        linhas.scrollTo(i);
+    
+    public void realizaAcaoTela(KeyEvent keyEvent) throws IOException {
+        if (keyEvent.isControlDown()) {
+        	if (keyEvent.getCode().equals(KeyCode.S)) {
+        		salvarArquivo();
+        		return;
+        	}
+        	
+        	if (keyEvent.getCode().equals(KeyCode.N)) {
+        		abrirNovo();
+        		return;
+        	}
+        	
+        	if (keyEvent.getCode().equals(KeyCode.O)) {
+        		abrirArquivo();
+        		return;
+        	}
+        } else {
+        	if (keyEvent.getCode().equals(KeyCode.F7)) {
+        		compilarArquivo();
+        	}
+        	if (keyEvent.getCode().equals(KeyCode.F1)) {
+        		mostrarEquipe();
+        	}
+        }
     }
 }
