@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
@@ -11,115 +10,155 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="principal" minHeight="600.0" minWidth="900.0" onKeyPressed="#realizaAcaoTela" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.equipeglr.TelaController">
+<AnchorPane minHeight="600.0" minWidth="900.0" onKeyPressed="#realizaAcaoTela" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.equipeglr.TelaController">
    <children>
+      <HBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="TOP" onMouseClicked="#abrirNovo" styleClass="ribbon-item" text="novo [ctrl-n]" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/new_file.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="TOP" onMouseClicked="#abrirArquivo" styleClass="ribbon-item" text="abrir [ctrl-o]" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" styleClass="ribbon-item">
+                     <image>
+                        <Image url="@images/doc.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="TOP" onMouseClicked="#salvarArquivo" styleClass="ribbon-item" text="salvar [ctrl-s]" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/save.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="TOP" onMouseClicked="#copiarTexto" styleClass="ribbon-item" text="copiar [ctrl-c]" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/copy.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="TOP" onMouseClicked="#colarTexto" styleClass="ribbon-item" text="colar [ctrl-v]" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/paste.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="TOP" onMouseClicked="#recortarTexto" styleClass="ribbon-item" text="recortar [ctrl-x]" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/cut.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="TOP" onMouseClicked="#compilarArquivo" styleClass="ribbon-item" text="compilar [F7]" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/engrenagem.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="TOP" onMouseClicked="#mostrarEquipe" styleClass="ribbon-item" text="equipe [F1]" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/about.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
       <Separator prefHeight="12.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0" />
-      <Label fx:id="btnNovo" alignment="CENTER" contentDisplay="TOP" layoutX="14.0" layoutY="14.0" onMouseClicked="#abrirNovo" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Novo (Cntrl + n)">
-         <graphic>
-            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/new_file.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label fx:id="btnAbrir" alignment="CENTER" contentDisplay="TOP" layoutX="114.0" layoutY="14.0" onMouseClicked="#abrirArquivo" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Abrir (Cntrl + o)">
-         <graphic>
-            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" styleClass="ribbon-item">
-               <image>
-                  <Image url="@images/doc.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label fx:id="btnSalvar" alignment="CENTER" contentDisplay="TOP" layoutX="214.0" layoutY="14.0" onMouseClicked="#salvarArquivo" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Salvar (Ctrl + s)">
-         <graphic>
-            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/save.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label fx:id="btnCopiar" alignment="CENTER" contentDisplay="TOP" layoutX="314.0" layoutY="14.0" onMouseClicked="#copiarTexto" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Copiar (Ctrl + c)">
-         <graphic>
-            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/copy.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label fx:id="btnColar" alignment="CENTER" contentDisplay="TOP" layoutX="414.0" layoutY="14.0" onMouseClicked="#colarTexto" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Colar (Ctrl + v)">
-         <graphic>
-            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/paste.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label fx:id="btnRecortar" alignment="CENTER" contentDisplay="TOP" layoutX="514.0" layoutY="14.0" onMouseClicked="#recortarTexto" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Recortar (Ctrl + x)">
-         <graphic>
-            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/cut.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label fx:id="btnCompilar" alignment="CENTER" contentDisplay="TOP" layoutX="614.0" layoutY="14.0" onMouseClicked="#compilarArquivo" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Compilar (F7)">
-         <graphic>
-            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/engrenagem.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label fx:id="btnEquipe" alignment="CENTER" contentDisplay="TOP" layoutX="714.0" layoutY="14.0" onMouseClicked="#mostrarEquipe" prefHeight="61.0" prefWidth="100.0" styleClass="ribbon-item" text="Equipe (F1)">
-         <graphic>
-            <ImageView fitHeight="40.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/about.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="82.0">
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="82.0">
         <items>
             <HBox SplitPane.resizableWithParent="false">
                <children>
-                  <ListView fx:id="linhas" disable="true" maxWidth="20.0" HBox.hgrow="ALWAYS">
-                     <opaqueInsets>
+                  <VBox HBox.hgrow="NEVER">
+                     <children>
+                        <TextArea fx:id="linhas" disable="true" minWidth="20.0" prefWidth="20.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></TextArea>
+                        <Label fx:id="labelLinhas" disable="true" maxHeight="12.0" minHeight="12.0" prefHeight="12.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></Label>
+                     </children>
+                     <HBox.margin>
                         <Insets />
-                     </opaqueInsets>
-                  </ListView>
+                     </HBox.margin>
+                  </VBox>
                   <TextArea fx:id="areaCodigo" onKeyPressed="#alterarContadorDeLinhaAoDigitar" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
@@ -131,6 +170,9 @@
         </items>
       </SplitPane>
       <Separator layoutX="10.0" layoutY="10.0" prefHeight="12.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      <Label fx:id="labelStatus" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <Label fx:id="labelStatus" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
    </children>
 </AnchorPane>

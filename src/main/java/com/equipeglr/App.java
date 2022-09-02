@@ -1,16 +1,17 @@
 package com.equipeglr;
 
-import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * JavaFX App
@@ -19,31 +20,42 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Scene scene = new Scene(loadFXML("tela"), 910, 600);
+        Scene scene = new Scene(loadFXML(), 910, 600);
         stage.setScene(scene);
         stage.setFullScreen(false);
         stage.minHeightProperty().set(600);
         stage.minWidthProperty().set(910);
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("images/terminal.png")));
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         scene.getRoot().applyCss();
-        TextArea areaCodigo = (TextArea) scene.lookup("#areaCodigo");
-        ListView<String> linhas = (ListView<String>) scene.lookup("#linhas");
-        Node n1 = areaCodigo.lookup(".scroll-bar");
-        if (n1 instanceof ScrollBar) {
-            final ScrollBar bar1 = (ScrollBar) n1;
-            Node n2 = linhas.lookup(".scroll-bar");
-            if (n2 instanceof ScrollBar) {
-                final ScrollBar bar2 = (ScrollBar) n2;
-                bar1.valueProperty().bindBidirectional(bar2.valueProperty());
-            }
-        }
-
-        stage.setTitle("Compilador GLR");
+        setScroll(scene);
         stage.show();
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+    private void setScroll(Scene scene) {
+        TextArea areaCodigo = (TextArea) scene.lookup("#areaCodigo");
+        TextArea areaMensagem = (TextArea) scene.lookup("#areaMensagem");
+        TextArea linhas = (TextArea) scene.lookup("#linhas");
+        ScrollBar n1 = (ScrollBar) areaCodigo.lookup(".scroll-bar");
+        if (n1 != null) {
+            ScrollBar n2 = (ScrollBar) linhas.lookup(".scroll-bar");
+            if (n2 != null) {
+                n1.valueProperty().bindBidirectional(n2.valueProperty());
+            }
+        }
+        setScrollPanePolicy(areaCodigo, ScrollPane.ScrollBarPolicy.ALWAYS);
+        setScrollPanePolicy(areaMensagem, ScrollPane.ScrollBarPolicy.ALWAYS);
+        setScrollPanePolicy(linhas, ScrollPane.ScrollBarPolicy.NEVER);
+    }
+
+    private void setScrollPanePolicy(Node node, ScrollPane.ScrollBarPolicy policy) {
+        ScrollPane scrollPaneCodigo = (ScrollPane) node.lookup(".scroll-pane");
+        scrollPaneCodigo.setVbarPolicy(policy);
+        scrollPaneCodigo.setHbarPolicy(policy);
+    }
+
+    private static Parent loadFXML() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("tela.fxml"));
         return fxmlLoader.load();
     }
 

@@ -1,16 +1,3 @@
-.list-view .scroll-bar:vertical {
-    -fx-padding: -10; -fx-opacity: 0
-}
-
-.list-view .scroll-bar:horizontal {
-    -fx-padding: -10; -fx-opacity: 0
-}
-
- .text-area .text {
-     -fx-line-spacing: 3px;
-}
-
-.list-cell {
-    -fx-padding: 3 0 0 0; /* 3 7 3 7 */
-    -fx-alignment: center;
+.label:hover {
+    -fx-background-color: #87ceeb;
 }
