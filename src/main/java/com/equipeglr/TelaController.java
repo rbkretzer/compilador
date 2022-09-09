@@ -17,11 +17,16 @@ import java.util.stream.IntStream;
 
 public class TelaController {
 
-    @FXML private Label labelStatus;
-    @FXML private TextArea areaMensagem;
-    @FXML private TextArea areaCodigo;
-    @FXML private TextArea linhas;
-    @FXML private Label labelLinhas;
+    @FXML
+    private Label labelStatus;
+    @FXML
+    private TextArea areaMensagem;
+    @FXML
+    private TextArea areaCodigo;
+    @FXML
+    private TextArea linhas;
+    @FXML
+    private Label labelLinhas;
     private static final FileChooser ufc = new FileChooser();
 
     public void initialize() {
@@ -41,7 +46,34 @@ public class TelaController {
     }
 
     public void compilarArquivo() {
-        areaMensagem.setText("->\tcompilação de programas ainda não foi implementada");
+        areaMensagem.setText("");
+        Lexico lexico = new Lexico();
+        lexico.setInput(areaCodigo.getText());
+        try {
+            Token t = null;
+            while ((t = lexico.nextToken()) != null) {
+                System.out.println(t.getLexeme());
+
+                // só escreve o lexema, necessário escrever t.getId, t.getPosition()
+
+                // t.getId () - retorna o identificador da classe. Olhar Constants.java e adaptar, pois
+                // deve ser apresentada a classe por extenso
+
+                // t.getPosition () - retorna a posição inicial do lexema no editor, necessário
+                // adaptar para mostrar a linha
+
+                // esse código apresenta os tokens enquanto não ocorrer erro
+                // no entanto, os tokens devem ser apresentados SÓ se não ocorrer erro,
+                // necessário adaptar para atender o que foi solicitado
+            }
+        } catch (LexicalError e) { // tratamento de erros
+            areaMensagem.setText("Erro na linha " + e.getPosition() + " - " + e.getMessage());
+
+            // e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
+            // ScannerConstants.java e adaptar conforme o enunciado da parte 2)
+
+            // e.getPosition() - retorna a posição inicial do erro, tem que adaptar para mostrar a linha
+        }
     }
 
     public void mostrarEquipe() {
@@ -97,7 +129,7 @@ public class TelaController {
     private void redefinirLarguraLista(int tamUltimaLinhaAnterior) {
         int tamUltimaLinha = getTamanhoUltimaLinha();
         if (tamUltimaLinhaAnterior != tamUltimaLinha) {
-            double newScale = (tamUltimaLinha == 2 ? 0.6 : (tamUltimaLinha == 1 ? 1 :0.5));
+            double newScale = (tamUltimaLinha == 2 ? 0.6 : (tamUltimaLinha == 1 ? 1 : 0.5));
             linhas.setMinWidth(20 * tamUltimaLinha * newScale);
             linhas.setMaxWidth(20 * tamUltimaLinha * newScale);
         }
@@ -108,7 +140,8 @@ public class TelaController {
             criarNovo();
         }
         if (labelStatus.getText() != null && !labelStatus.getText().isEmpty()) {
-            String path = labelStatus.getText().contains(".txt") ? labelStatus.getText() : labelStatus.getText().concat(".txt");
+            String path = labelStatus.getText().contains(".txt") ? labelStatus.getText()
+                    : labelStatus.getText().concat(".txt");
             FileWriter writer = new FileWriter(labelStatus.getText(), Charset.availableCharsets().get("UTF-8"), false);
             writer.write(areaCodigo.getText());
             writer.close();
@@ -129,10 +162,12 @@ public class TelaController {
     }
 
     public void alterarContadorDeLinhaAoDigitar(KeyEvent keyEvent) throws IOException {
-        if (keyEvent.getCode().equals(KeyCode.ENTER) || (keyEvent.getCode().equals(KeyCode.V) && keyEvent.isControlDown())) {
+        if (keyEvent.getCode().equals(KeyCode.ENTER)
+                || (keyEvent.getCode().equals(KeyCode.V) && keyEvent.isControlDown())) {
             adicionarLinhas();
         }
-        if (keyEvent.getCode().equals(KeyCode.BACK_SPACE) || keyEvent.getCode().equals(KeyCode.DELETE) || (keyEvent.getCode().equals(KeyCode.X) && keyEvent.isControlDown())) {
+        if (keyEvent.getCode().equals(KeyCode.BACK_SPACE) || keyEvent.getCode().equals(KeyCode.DELETE)
+                || (keyEvent.getCode().equals(KeyCode.X) && keyEvent.isControlDown())) {
             if (areaCodigo.getParagraphs().size() != getQuantidadeLinhas()) {
                 removerLinhas();
             }
@@ -142,27 +177,27 @@ public class TelaController {
     private int getQuantidadeLinhas() {
         return linhas.getText().split("\n").length;
     }
-    
+
     public void realizaAcaoTela(KeyEvent keyEvent) throws IOException {
         if (keyEvent.isControlDown()) {
-        	if (keyEvent.getCode().equals(KeyCode.S)) {
-        		salvarArquivo();
-        	}
-        	
-        	if (keyEvent.getCode().equals(KeyCode.N)) {
-        		abrirNovo();
-        	}
-        	
-        	if (keyEvent.getCode().equals(KeyCode.O)) {
-        		abrirArquivo();
+            if (keyEvent.getCode().equals(KeyCode.S)) {
+                salvarArquivo();
+            }
+
+            if (keyEvent.getCode().equals(KeyCode.N)) {
+                abrirNovo();
+            }
+
+            if (keyEvent.getCode().equals(KeyCode.O)) {
+                abrirArquivo();
             }
         } else {
-        	if (keyEvent.getCode().equals(KeyCode.F7)) {
-        		compilarArquivo();
-        	}
-        	if (keyEvent.getCode().equals(KeyCode.F1)) {
-        		mostrarEquipe();
-        	}
+            if (keyEvent.getCode().equals(KeyCode.F7)) {
+                compilarArquivo();
+            }
+            if (keyEvent.getCode().equals(KeyCode.F1)) {
+                mostrarEquipe();
+            }
         }
     }
 }
