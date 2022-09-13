@@ -49,31 +49,37 @@ public class TelaController {
         areaMensagem.setText("");
         Lexico lexico = new Lexico();
         lexico.setInput(areaCodigo.getText());
+        String compiled = "Linha\tClasse\t\tLexema\n\n";
         try {
             Token t = null;
             while ((t = lexico.nextToken()) != null) {
-                System.out.println(t.getLexeme());
-
-                // só escreve o lexema, necessário escrever t.getId, t.getPosition()
-
-                // t.getId () - retorna o identificador da classe. Olhar Constants.java e adaptar, pois
-                // deve ser apresentada a classe por extenso
-
-                // t.getPosition () - retorna a posição inicial do lexema no editor, necessário
-                // adaptar para mostrar a linha
-
-                // esse código apresenta os tokens enquanto não ocorrer erro
-                // no entanto, os tokens devem ser apresentados SÓ se não ocorrer erro,
-                // necessário adaptar para atender o que foi solicitado
+                compiled += getLinha(t.getPosition()) + "\t" + converteParaClasse(t.getId()) + "\t" + t.getLexeme() + "\n";
             }
         } catch (LexicalError e) { // tratamento de erros
-            areaMensagem.setText("Erro na linha " + e.getPosition() + " - " + e.getMessage());
+            areaMensagem.setText("Erro na linha " + getLinha(e.getPosition()) + " - " + e.getMessage());
 
             // e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
             // ScannerConstants.java e adaptar conforme o enunciado da parte 2)
 
             // e.getPosition() - retorna a posição inicial do erro, tem que adaptar para mostrar a linha
         }
+        System.out.println(compiled);
+    }
+
+    private String converteParaClasse(int id) {
+        return Classe.values()[id-2].toString();
+    }
+
+    private String getLinha(int position) {
+        int linesEncountered = 0;
+        for (int i = 0; i < position; i++) {
+
+            if(areaCodigo.getText().charAt(i) == '\n') {
+                // next line char encountered
+                linesEncountered++;
+            }
+        }
+        return String.valueOf(linesEncountered + 1);
     }
 
     public void mostrarEquipe() {
