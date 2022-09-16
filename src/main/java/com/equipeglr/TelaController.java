@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Formatter;
 import java.util.stream.IntStream;
 
 public class TelaController {
@@ -49,32 +50,35 @@ public class TelaController {
         areaMensagem.setText("");
         Lexico lexico = new Lexico();
         lexico.setInput(areaCodigo.getText());
-        String compiled = "Linha\tClasse\t\tLexema\n\n";
+        Formatter fmt = new Formatter();
+        fmt.format("%5s %15s %25s\n", "Linha", "Classe", "Lexema");        
         try {
             Token t = null;
             while ((t = lexico.nextToken()) != null) {
-                compiled += getLinha(t.getPosition()) + "\t" + converteParaClasse(t.getId()) + "\t" + t.getLexeme() + "\n";
+                fmt.format("%4s %22s %20s\n", getLinha(t.getPosition()), converteParaClasse(t.getId()), t.getLexeme());
+                // compiled += getLinha(t.getPosition()) + "\t" + converteParaClasse(t.getId()) + "\t" + t.getLexeme()
             }
+            areaMensagem.setText(fmt + "\n\t Programa compilado com sucesso");
         } catch (LexicalError e) { // tratamento de erros
             areaMensagem.setText("Erro na linha " + getLinha(e.getPosition()) + " - " + e.getMessage());
 
             // e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
             // ScannerConstants.java e adaptar conforme o enunciado da parte 2)
 
-            // e.getPosition() - retorna a posição inicial do erro, tem que adaptar para mostrar a linha
+            // e.getPosition() - retorna a posição inicial do erro, tem que adaptar para
+            // mostrar a linha
         }
-        System.out.println(compiled);
     }
 
     private String converteParaClasse(int id) {
-        return Classe.values()[id-2].toString();
+        return Classe.values()[id - 2].toString();
     }
 
     private String getLinha(int position) {
         int linesEncountered = 0;
         for (int i = 0; i < position; i++) {
 
-            if(areaCodigo.getText().charAt(i) == '\n') {
+            if (areaCodigo.getText().charAt(i) == '\n') {
                 // next line char encountered
                 linesEncountered++;
             }
