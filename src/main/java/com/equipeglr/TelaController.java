@@ -51,22 +51,18 @@ public class TelaController {
         Lexico lexico = new Lexico();
         lexico.setInput(areaCodigo.getText());
         Formatter fmt = new Formatter();
-        fmt.format("%5s %15s %25s\n", "Linha", "Classe", "Lexema");        
+        fmt.format("%5s %15s %25s\n", "Linha", "Classe", "Lexema");
         try {
             Token t = null;
             while ((t = lexico.nextToken()) != null) {
                 fmt.format("%4s %22s %20s\n", getLinha(t.getPosition()), converteParaClasse(t.getId()), t.getLexeme());
-                // compiled += getLinha(t.getPosition()) + "\t" + converteParaClasse(t.getId()) + "\t" + t.getLexeme()
             }
             areaMensagem.setText(fmt + "\n\t Programa compilado com sucesso");
-        } catch (LexicalError e) { // tratamento de erros
-            areaMensagem.setText("Erro na linha " + getLinha(e.getPosition()) + " - " + e.getMessage());
-
-            // e.getMessage() - retorna a mensagem de erro de SCANNER_ERRO (olhar
-            // ScannerConstants.java e adaptar conforme o enunciado da parte 2)
-
-            // e.getPosition() - retorna a posição inicial do erro, tem que adaptar para
-            // mostrar a linha
+        } catch (LexicalError e) {
+            areaMensagem.setText("Erro na linha " +
+                    getLinha(e.getPosition()) + " - "
+                    + (e.getMessage().contains("simbolo invalido") ? areaCodigo.getText().charAt(e.getPosition()) : "")
+                    + " " + e.getMessage());
         }
     }
 
@@ -79,7 +75,6 @@ public class TelaController {
         for (int i = 0; i < position; i++) {
 
             if (areaCodigo.getText().charAt(i) == '\n') {
-                // next line char encountered
                 linesEncountered++;
             }
         }
