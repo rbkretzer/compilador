@@ -66,10 +66,9 @@ public class TelaController {
                     columnLengths.put(i, a[i].length());
                 }
             }));
-            System.out.println("columnLengths = " + columnLengths);
 
             final StringBuilder formatString = new StringBuilder("");
-            columnLengths.entrySet().stream().forEach(e -> formatString.append("| %-" + e.getValue() + "s "));
+            columnLengths.entrySet().forEach(e -> formatString.append("| %-" + e.getValue() + "s "));
             formatString.append("|\n");
 
             String textoCompilado = tabelaLexemas.stream().map(i -> String.format(formatString.toString(), i)).collect(Collectors.joining());
@@ -77,7 +76,7 @@ public class TelaController {
         } catch (LexicalError e) {
             areaMensagem.setText("Erro na linha " +
                     getLinha(e.getPosition()) + " - "
-                    + (e.getMessage().contains("simbolo invalido") ? areaCodigo.getText().charAt(e.getPosition()) : "")
+                    + (e.getMessage().contains("símbolo inválido") ? areaCodigo.getText().charAt(e.getPosition()) : "")
                     + " " + e.getMessage());
         }
     }
