@@ -71,10 +71,8 @@ public class TelaController {
             final StringBuilder formatString = new StringBuilder("");
             columnLengths.entrySet().stream().forEach(e -> formatString.append("| %-" + e.getValue() + "s "));
             formatString.append("|\n");
-            System.out.println("formatString = " + formatString.toString());
 
             String textoCompilado = tabelaLexemas.stream().map(i -> String.format(formatString.toString(), i)).collect(Collectors.joining());
-            System.out.println(textoCompilado);
             areaMensagem.appendText(textoCompilado + "\n\t Programa compilado com sucesso");
         } catch (LexicalError e) {
             areaMensagem.setText("Erro na linha " +
