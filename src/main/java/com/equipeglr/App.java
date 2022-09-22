@@ -34,8 +34,11 @@ public class App extends Application {
 
     private void setScroll(Scene scene) {
         TextArea areaCodigo = (TextArea) scene.lookup("#areaCodigo");
+        areaCodigo.setStyle("-fx-font-family: monospace");
         TextArea areaMensagem = (TextArea) scene.lookup("#areaMensagem");
+        areaMensagem.setStyle("-fx-font-family: monospace");
         TextArea linhas = (TextArea) scene.lookup("#linhas");
+        linhas.setStyle("-fx-font-family: monospace");
         ScrollBar n1 = (ScrollBar) areaCodigo.lookup(".scroll-bar");
         if (n1 != null) {
             ScrollBar n2 = (ScrollBar) linhas.lookup(".scroll-bar");

@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Formatter;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class TelaController {
 
@@ -50,14 +52,30 @@ public class TelaController {
         areaMensagem.setText("");
         Lexico lexico = new Lexico();
         lexico.setInput(areaCodigo.getText());
-        Formatter fmt = new Formatter();
-        fmt.format("%5s %15s %25s\n", "Linha", "Classe", "Lexema");
+        List<String[]> tabelaLexemas = new ArrayList<>();
+        tabelaLexemas.add(new String[]{"Linha", "Classe", "Lexema"});
         try {
             Token t = null;
             while ((t = lexico.nextToken()) != null) {
-                fmt.format("%4s %22s %20s\n", getLinha(t.getPosition()), converteParaClasse(t.getId()), t.getLexeme());
+                tabelaLexemas.add(new String[]{getLinha(t.getPosition()), converteParaClasse(t.getId()), t.getLexeme()});
             }
-            areaMensagem.setText(fmt + "\n\t Programa compilado com sucesso");
+            Map<Integer, Integer> columnLengths = new HashMap<>();
+            tabelaLexemas.forEach(a -> Stream.iterate(0, (i -> i < a.length), (i -> ++i)).forEach(i -> {
+                columnLengths.putIfAbsent(i, 0);
+                if (columnLengths.get(i) < a[i].length()) {
+                    columnLengths.put(i, a[i].length());
+                }
+            }));
+            System.out.println("columnLengths = " + columnLengths);
+
+            final StringBuilder formatString = new StringBuilder("");
+            columnLengths.entrySet().stream().forEach(e -> formatString.append("| %-" + e.getValue() + "s "));
+            formatString.append("|\n");
+            System.out.println("formatString = " + formatString.toString());
+
+            String textoCompilado = tabelaLexemas.stream().map(i -> String.format(formatString.toString(), i)).collect(Collectors.joining());
+            System.out.println(textoCompilado);
+            areaMensagem.appendText(textoCompilado + "\n\t Programa compilado com sucesso");
         } catch (LexicalError e) {
             areaMensagem.setText("Erro na linha " +
                     getLinha(e.getPosition()) + " - "
@@ -108,7 +126,7 @@ public class TelaController {
         IntStream.range(0, areaCodigo.getParagraphs().size()).forEach(x -> {
             int linhaAtual = x + 1;
             if (linhaAtual > linhasExistentes) {
-                linhas.setText(linhas.getText().concat("\n" + String.valueOf(linhaAtual)));
+                linhas.setText(linhas.getText().concat("\n" + linhaAtual));
             }
         });
         redefinirLarguraLista(tamUltimaLinhaAnterior);
@@ -120,7 +138,7 @@ public class TelaController {
         IntStream.range(1, linhasExistentes).forEach(x -> {
             int linhaAtual = x + 1;
             if (linhaAtual > areaCodigo.getParagraphs().size()) {
-                linhas.setText(linhas.getText().replaceFirst("\n" + String.valueOf(linhaAtual), ""));
+                linhas.setText(linhas.getText().replaceFirst("\n" + linhaAtual, ""));
             }
         });
         redefinirLarguraLista(tamUltimaLinhaAnterior);
@@ -145,8 +163,6 @@ public class TelaController {
             criarNovo();
         }
         if (labelStatus.getText() != null && !labelStatus.getText().isEmpty()) {
-            String path = labelStatus.getText().contains(".txt") ? labelStatus.getText()
-                    : labelStatus.getText().concat(".txt");
             FileWriter writer = new FileWriter(labelStatus.getText(), Charset.availableCharsets().get("UTF-8"), false);
             writer.write(areaCodigo.getText());
             writer.close();
@@ -166,7 +182,7 @@ public class TelaController {
         areaCodigo.copy();
     }
 
-    public void alterarContadorDeLinhaAoDigitar(KeyEvent keyEvent) throws IOException {
+    public void alterarContadorDeLinhaAoDigitar(KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.ENTER)
                 || (keyEvent.getCode().equals(KeyCode.V) && keyEvent.isControlDown())) {
             adicionarLinhas();
