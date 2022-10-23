@@ -1,4 +1,4 @@
-package com.equipeglr;
+package com.equipeglr.utils;
 
 public enum Classe {
     IDENTIFICADOR("Identificador"),

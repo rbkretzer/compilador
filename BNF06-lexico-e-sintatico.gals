@@ -1,0 +1,158 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = Stream
+Parser = LL
+#RegularDefinitions
+mai: [A-Z]
+min: [a-z]
+dig:  [0-9]
+grand: [1-9]d[1-9]
+frac: \.[0-9]+
+
+
+#Tokens
+//IDENTIFICADOR
+id: ({mai} | {min}) (_? ({mai} | {min} | {dig})+ )*
+
+//CONSTANTES
+cint: {dig}* {grand} {dig}* | {dig}+
+
+cfloat: {dig}* {frac} {grand}? {dig}* | {dig}*  \.{dig}* {grand} {dig}*
+
+cchar: \\(n|s|t)
+
+cstring: \"[^\"\n\\]* \"
+
+//Comentario de linha
+:! #[^\n]*
+
+//Comentario de bloco
+:! \[\n[^\[\]]*\n\]
+
+
+//PALAVRAS RESERVADAS
+pr_boolean = id: "boolean"
+pr_break = id: "break"
+pr_char = id: "char"
+pr_do = id: "do"
+pr_else = id: "else"
+pr_end = id: "end"
+pr_false = id: "false"
+pr_float = id: "float"
+pr_fun = id: "fun"
+pr_if = id: "if"
+pr_int = id: "int"
+pr_main = id: "main"
+pr_print = id: "print"
+pr_println = id: "printfn"
+pr_readln = id: "readln"
+pr_string = id: "string"
+pr_true = id: "true"
+pr_val = id: "val"
+pr_var = id: "var"
+pr_while = id: "while"
+
+//SIMBOLOS ESPECIAIS
+":"
+","
+";"
+"="
+"("
+")"
+"{"
+"}"
+"=="
+"!="
+"<"
+">"
+"+"
+"-"
+"*"
+"/"
+"%"
+"&&"
+"||"
+"!"
+
+//RECONHECER E IGNORAR CARACTERES DE FORMATACAO
+:[\s\t\n]
+#NonTerminals
+<forma_geral_problema>
+<lista_de_instrucoes>
+<repete_instrucoes>
+<tem_mais_instrucao>
+<declaracao_constantes>
+<instancia>
+<declaracao_tipo>
+<declaracao_variaveis>
+<lista_id>
+<id>
+<tipo>
+<valor>
+<lista_de_comandos>
+<repete_comando>
+<comando>
+<atribuicao>
+<entrada_dados>
+<atribui_string>
+<saida_dados>
+<lista_de_expressao>
+<repete_expressao>
+<selecao>
+<selecao_opcional>
+<repeticao>
+<expressao>
+<expressao_>
+<elemento>
+<relacional>
+<relacional_>
+<operador_relacional>
+<aritmetica>
+<aritmetica_>
+<termo>
+<termo_>
+<fator>
+#Grammar
+<forma_geral_problema>::= pr_fun pr_main "{" <lista_de_instrucoes> "}";
+<lista_de_instrucoes>::= <repete_instrucoes> <tem_mais_instrucao>;
+<tem_mais_instrucao>::= <lista_de_instrucoes> | î;
+<repete_instrucoes>::= <declaracao_constantes> | <declaracao_variaveis> | <comando>;
+<declaracao_constantes>::= pr_val <lista_id> <instancia>;
+<instancia>::= ":" <tipo> <declaracao_tipo> | "=" <valor>";" ;
+<declaracao_tipo>::= ";" | "=" <valor>";";
+<declaracao_variaveis>::= pr_var <lista_id> <instancia>;
+<lista_id>::= id <id>;
+<id>::= î | "," <lista_id>;
+<tipo>::= pr_int | pr_float | pr_char | pr_string | pr_boolean;
+<valor>::= cint | cfloat | cchar | cstring | pr_true | pr_false;
+<lista_de_comandos>::= <comando> <repete_comando>;
+<repete_comando>::= î | <lista_de_comandos>;
+<comando>::= <atribuicao> | <entrada_dados> | <saida_dados> | <selecao> | <repeticao> | pr_break ";";
+<atribuicao>::= id "=" <expressao>";";
+<entrada_dados>::= pr_readln "(" <atribui_string> <lista_id> ")" ";";
+<atribui_string>::= cstring "," | î;
+<saida_dados>::= pr_print "(" <lista_de_expressao> ")" ";" | pr_println "(" <lista_de_expressao> ")" ";";
+<lista_de_expressao>::= <expressao> <repete_expressao>; 
+<repete_expressao>::= î | "," <lista_de_expressao>;
+<selecao>::= pr_if "(" <expressao> ")" <lista_de_comandos> <selecao_opcional> pr_end";";
+<selecao_opcional>::= pr_else <lista_de_comandos> | î;
+<repeticao>::= pr_do <lista_de_comandos> pr_while "(" <expressao> ")" pr_end";";
+<expressao>::= <elemento> <expressao_>;
+<expressao_>::= î | "&&" <elemento> <expressao_> | "||" <elemento> <expressao_>;
+<elemento>::= <relacional> | pr_true | pr_false | "!" <elemento>;
+<relacional>::= <aritmetica> <relacional_>;
+<relacional_>::= î | <operador_relacional> <aritmetica>;
+<operador_relacional>::= "==" | "!=" | "<" | ">";
+<aritmetica>::= <termo> <aritmetica_>;
+<aritmetica_>::= î | "+" <termo> <aritmetica_> | "-" <termo> <aritmetica_>;
+<termo>::= <fator> <termo_>;
+<termo_>::= î | "*" <fator> <termo_> | "/" <fator> <termo_> | "%" <fator> <termo_>;
+<fator>::= id | cint | cfloat | cchar |cstring | "(" <expressao> ")" | "+" <fator> | "-" <fator>;
+

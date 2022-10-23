@@ -1,4 +1,4 @@
-package com.equipeglr;
+package com.equipeglr.gals;
 
 public class LexicalError extends AnalysisError {
     public LexicalError(String msg, int position) {

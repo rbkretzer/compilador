@@ -1,4 +1,4 @@
-package com.equipeglr;
+package com.equipeglr.gals;
 
 public class AnalysisError extends Exception {
     private int position;

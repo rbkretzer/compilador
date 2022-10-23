@@ -1,6 +1,6 @@
-package com.equipeglr;
+package com.equipeglr.gals;
 
-public interface Constants extends ScannerConstants {
+public interface Constants extends ScannerConstants, ParserConstants {
     int EPSILON = 0;
     int DOLLAR = 1;
 
@@ -22,7 +22,7 @@ public interface Constants extends ScannerConstants {
     int t_pr_int = 17;
     int t_pr_main = 18;
     int t_pr_print = 19;
-    int t_pr_printfn = 20;
+    int t_pr_println = 20;
     int t_pr_readln = 21;
     int t_pr_string = 22;
     int t_pr_true = 23;

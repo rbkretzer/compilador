@@ -1,4 +1,4 @@
-package com.equipeglr;
+package com.equipeglr.app;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -17,6 +17,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import com.equipeglr.gals.LexicalError;
+import com.equipeglr.gals.Lexico;
+import com.equipeglr.gals.Token;
+import com.equipeglr.utils.Classe;
 
 public class TelaController {
 

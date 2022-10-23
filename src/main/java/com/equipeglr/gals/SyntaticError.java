@@ -1,4 +1,4 @@
-package com.equipeglr;
+package com.equipeglr.gals;
 
 public class SyntaticError extends AnalysisError {
     public SyntaticError(String msg, int position) {
