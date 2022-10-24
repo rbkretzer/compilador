@@ -78,12 +78,16 @@ public class TelaController {
             } catch (SyntaticError e) {
                 Token tonkenEncontrado = sintatico.getToken();
                 areaMensagem.setText("Erro na linha " + getLinha(tonkenEncontrado.getPosition()) + " - encontrado "
-                        + tonkenEncontrado.getLexeme() + " na entrada esperado " + e.getMessage());
+                        + parseIfEOF(tonkenEncontrado.getLexeme()) + " na entrada esperado " + e.getMessage());
             } catch (SemanticError e) {
                 // Trata erros semânticos
             }
         }).start();
 
+    }
+
+    private String parseIfEOF(String lexeme) {
+        return lexeme == "$" ? "EOF" : lexeme;
     }
 
     private String converteParaClasse(int id) {
