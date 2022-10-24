@@ -1,11 +1,4 @@
-package com.equipeglr.app;
-
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.FileChooser;
+package com.equipeglr;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,15 +6,25 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import com.equipeglr.gals.LexicalError;
 import com.equipeglr.gals.Lexico;
+import com.equipeglr.gals.SemanticError;
+import com.equipeglr.gals.Semantico;
+import com.equipeglr.gals.Sintatico;
+import com.equipeglr.gals.SyntaticError;
 import com.equipeglr.gals.Token;
 import com.equipeglr.utils.Classe;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 
 public class TelaController {
 
@@ -56,34 +59,31 @@ public class TelaController {
     public void compilarArquivo() {
         areaMensagem.setText("");
         Lexico lexico = new Lexico();
+        Sintatico sintatico = new Sintatico();
+        Semantico semantico = new Semantico();
         lexico.setInput(areaCodigo.getText());
         List<String[]> tabelaLexemas = new ArrayList<>();
-        tabelaLexemas.add(new String[]{"Linha", "Classe", "Lexema"});
-        try {
-            Token t = null;
-            while ((t = lexico.nextToken()) != null) {
-                tabelaLexemas.add(new String[]{getLinha(t.getPosition()), converteParaClasse(t.getId()), t.getLexeme()});
+        tabelaLexemas.add(new String[] { "Linha", "Classe", "Lexema" });
+        new Thread(() -> {
+            try {
+                sintatico.parse(lexico, semantico);
+                areaMensagem.appendText("Programa compilado com sucesso");
+            } catch (LexicalError e) {
+                areaMensagem.setText("Erro na linha " +
+                        getLinha(e.getPosition()) + " - "
+                        + (e.getMessage().contains("símbolo inválido")
+                                ? areaCodigo.getText().charAt(e.getPosition())
+                                : "")
+                        + " " + e.getMessage());
+            } catch (SyntaticError e) {
+                Token tonkenEncontrado = sintatico.getToken();
+                areaMensagem.setText("Erro na linha " + getLinha(tonkenEncontrado.getPosition()) + " - encontrado "
+                        + tonkenEncontrado.getLexeme() + " na entrada esperado " + e.getMessage());
+            } catch (SemanticError e) {
+                // Trata erros semânticos
             }
-            Map<Integer, Integer> columnLengths = new HashMap<>();
-            tabelaLexemas.forEach(a -> Stream.iterate(0, (i -> i < a.length), (i -> ++i)).forEach(i -> {
-                columnLengths.putIfAbsent(i, 0);
-                if (columnLengths.get(i) < a[i].length()) {
-                    columnLengths.put(i, a[i].length());
-                }
-            }));
+        }).start();
 
-            final StringBuilder formatString = new StringBuilder("");
-            columnLengths.entrySet().forEach(e -> formatString.append("| %-" + e.getValue() + "s "));
-            formatString.append("|\n");
-
-            String textoCompilado = tabelaLexemas.stream().map(i -> String.format(formatString.toString(), i)).collect(Collectors.joining());
-            areaMensagem.appendText(textoCompilado + "\n\t Programa compilado com sucesso");
-        } catch (LexicalError e) {
-            areaMensagem.setText("Erro na linha " +
-                    getLinha(e.getPosition()) + " - "
-                    + (e.getMessage().contains("símbolo inválido") ? areaCodigo.getText().charAt(e.getPosition()) : "")
-                    + " " + e.getMessage());
-        }
     }
 
     private String converteParaClasse(int id) {

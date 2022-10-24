@@ -1,4 +1,4 @@
-package com.equipeglr.app;
+package com.equipeglr;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
