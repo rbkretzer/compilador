@@ -17,7 +17,6 @@ import com.equipeglr.gals.Semantico;
 import com.equipeglr.gals.Sintatico;
 import com.equipeglr.gals.SyntaticError;
 import com.equipeglr.gals.Token;
-import com.equipeglr.utils.Classe;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -88,10 +87,6 @@ public class TelaController {
 
     private String parseIfEOF(String lexeme) {
         return lexeme == "$" ? "EOF" : lexeme;
-    }
-
-    private String converteParaClasse(int id) {
-        return Classe.values()[id - 2].toString();
     }
 
     private String getLinha(int position) {

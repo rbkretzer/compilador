@@ -1,5 +1,11 @@
 package com.equipeglr.gals;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Stack;
 import java.util.StringJoiner;
 
@@ -10,77 +16,73 @@ public class Semantico implements Constants {
 
     public void executeAction(int action, Token token) throws SemanticError {
         System.out.println("Ação #" + action + ", Token: " + token);
-        try {
-            switch (action) {
-                case 1:
-                    acionaToken1();
-                    break;
-                case 2:
-                    acionaToken2();
-                    break;
-                case 3:
-                    acionaToken3();
-                    break;
-                case 4:
-                    acionaToken4();
-                    break;
-                case 5:
-                    acionaToken5(token);
-                    break;
-                case 6:
-                    acionaToken6(token);
-                    break;
-                case 7:
-                    acionaToken7();
-                    break;
-                case 8:
-                    acionaToken8();
-                    break;
-                case 9:
-                    acionaToken9(token);
-                    break;
-                case 10:
-                    acionaToken10();
-                    break;
-                case 11:
-                    acionaToken11(token);
-                    break;
-                case 12:
-                    acionaToken12(token);
-                    break;
-                case 13:
-                    acionaToken13();
-                    break;
-                case 14:
-                    acionaToken14();
-                    break;
-                case 15:
-                    acionaToken15();
-                    break;
-                case 16:
-                    acionaToken16();
-                    break;
-                case 17:
-                    acionaToken17();
-                    break;
-                case 18:
-                    acionaToken18();
-                    break;
-                case 19:
-                    acionaToken19();
-                    break;
-                case 20:
-                    acionaToken20();
-                    break;
-                case 21:
-                    acionaToken21();
-                    break;
-                case 22:
-                    acionaToken22();
-                    break;
-            }
-        } catch (SemanticError ex0) {
-            System.out.println(ex0);
+        switch (action) {
+            case 1:
+                acionaToken1();
+                break;
+            case 2:
+                acionaToken2();
+                break;
+            case 3:
+                acionaToken3();
+                break;
+            case 4:
+                acionaToken4();
+                break;
+            case 5:
+                acionaToken5(token);
+                break;
+            case 6:
+                acionaToken6(token);
+                break;
+            case 7:
+                acionaToken7();
+                break;
+            case 8:
+                acionaToken8();
+                break;
+            case 9:
+                acionaToken9(token);
+                break;
+            case 10:
+                acionaToken10();
+                break;
+            case 11:
+                acionaToken11(token);
+                break;
+            case 12:
+                acionaToken12(token);
+                break;
+            case 13:
+                acionaToken13();
+                break;
+            case 14:
+                acionaToken14();
+                break;
+            case 15:
+                acionaToken15();
+                break;
+            case 16:
+                acionaToken16();
+                break;
+            case 17:
+                acionaToken17();
+                break;
+            case 18:
+                acionaToken18();
+                break;
+            case 19:
+                acionaToken19();
+                break;
+            case 20:
+                acionaToken20();
+                break;
+            case 21:
+                acionaToken21();
+                break;
+            case 22:
+                acionaToken22();
+                break;
         }
     }
 
@@ -158,11 +160,10 @@ public class Semantico implements Constants {
     }
 
     private void acionaToken9(Token token) {
-        operador = token.getLexeme();
-        // TODO: realizar validações
+        operador = token.getLexeme().charAt(0);
     }
 
-    private void acionaToken10() {
+    private void acionaToken10() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
         if (!tipo1.equals(tipo2)) {
@@ -191,14 +192,14 @@ public class Semantico implements Constants {
         joiner.add("ldc.i4.0");
     }
 
-    private void acionaToken13() {
-        tipo:= pilha_tipos.desempilha
-  se (tipo=bool) 
-  então pilha_tipos.empilha (bool) 
-  senão erro semântico, parar
-  fimse
-  código.adiciona (ldc.i4.1)
-  código.adiciona (xor)
+    private void acionaToken13() throws SemanticError {
+        String tipo = pilha.pop();
+        if (!tipo.equals("bool")) {
+            throw new SemanticError("erro semântico, parar");
+        } 
+        pilha.push("bool");
+        joiner.add("ldc.i4.1");
+        joiner.add("xor");
     }
 
     private void acionaToken14() {
@@ -222,6 +223,16 @@ public class Semantico implements Constants {
         joiner.add("    ret");
         joiner.add("    }");
         joiner.add("}");
+
+        Path path = Paths.get("F:\\Users\\RBK\\Desktop");
+ 
+        try {
+            Files.writeString(path, joiner.toString(),
+                              StandardCharsets.UTF_8);
+        }
+        catch (IOException ex) {
+            System.out.print("NÃO FOI POSSÍVEL SALVAR, TOMASSI NO CU");
+        }
     }
 
     private void acionaToken17() {
