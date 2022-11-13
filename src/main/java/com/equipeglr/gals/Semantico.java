@@ -1,11 +1,14 @@
 package com.equipeglr.gals;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Stack;
 import java.util.StringJoiner;
 
@@ -14,7 +17,7 @@ public class Semantico implements Constants {
     private static final Stack<String> pilha = new Stack<>();
     private char operador;
 
-    public void executeAction(int action, Token token) throws SemanticError {
+    public void executeAction(int action, Token token) throws SemanticError, IOException {
         System.out.println("Ação #" + action + ", Token: " + token);
         switch (action) {
             case 1:
@@ -219,20 +222,17 @@ public class Semantico implements Constants {
         joiner.add("    .entrypoint");
     }
 
-    private void acionaToken16() {
+    private void acionaToken16() throws IOException {
         joiner.add("    ret");
         joiner.add("    }");
         joiner.add("}");
 
-        Path path = Paths.get("F:\\Users\\RBK\\Desktop");
- 
-        try {
-            Files.writeString(path, joiner.toString(),
-                              StandardCharsets.UTF_8);
-        }
-        catch (IOException ex) {
-            System.out.print("NÃO FOI POSSÍVEL SALVAR, TOMASSI NO CU");
-        }
+        Path path = Paths.get("F:\\Users\\RBK\\Desktop\\teste.il");
+
+        
+        BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+        writer.write(joiner.toString());
+        writer.flush();
     }
 
     private void acionaToken17() {
