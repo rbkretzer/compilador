@@ -227,7 +227,7 @@ public class Semantico implements Constants {
         joiner.add("    }");
         joiner.add("}");
 
-        Path path = Paths.get("F:\\Users\\RBK\\Desktop\\teste.il");
+        Path path = Paths.get("F:\\Users\\RBK\\Desktop\\teste.txt");
 
         
         BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
