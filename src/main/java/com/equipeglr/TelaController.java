@@ -75,13 +75,12 @@ public class TelaController {
                                 : "")
                         + " " + e.getMessage());
             } catch (SyntaticError e) {
-                Token tonkenEncontrado = sintatico.getToken();
-                areaMensagem.setText("Erro na linha " + getLinha(tonkenEncontrado.getPosition()) + " - encontrado "
-                        + parseIfEOF(tonkenEncontrado.getLexeme()) + " esperado " + e.getMessage());
+                Token tokoenAtual = sintatico.getToken();
+                areaMensagem.setText("Erro na linha " + getLinha(tokoenAtual.getPosition()) + " - encontrado "
+                        + parseIfEOF(tokoenAtual.getLexeme()) + " esperado " + e.getMessage());
             } catch (SemanticError e) {
-                Token tonkenEncontrado = sintatico.getToken();
-                areaMensagem.setText("Erro na linha " + getLinha(tonkenEncontrado.getPosition()) + " - encontrado "
-                        + parseIfEOF(tonkenEncontrado.getLexeme()) + " esperado " + e.getMessage());
+                Token tokoenAtual = sintatico.getToken();
+                areaMensagem.setText("Erro na linha " + getLinha(tokoenAtual.getPosition()) + " - " + e.getMessage());
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }

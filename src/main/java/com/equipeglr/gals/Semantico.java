@@ -1,8 +1,6 @@
 package com.equipeglr.gals;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -13,24 +11,24 @@ import java.util.Stack;
 import java.util.StringJoiner;
 
 public class Semantico implements Constants {
-    private static final StringJoiner joiner = new StringJoiner("\n");
+    private static StringJoiner joiner = new StringJoiner("\n");
     private static final Stack<String> pilha = new Stack<>();
-    private char operador;
+    private String operador;
 
     public void executeAction(int action, Token token) throws SemanticError, IOException {
         System.out.println("Ação #" + action + ", Token: " + token);
         switch (action) {
             case 1:
-                acionaToken1();
+                acionaToken1(); // FEITO
                 break;
             case 2:
-                acionaToken2();
+                acionaToken2(); // FEITO
                 break;
             case 3:
-                acionaToken3();
+                acionaToken3(); // FEITO
                 break;
             case 4:
-                acionaToken4();
+                acionaToken4(); // FEITO
                 break;
             case 5:
                 acionaToken5(token);
@@ -39,59 +37,62 @@ public class Semantico implements Constants {
                 acionaToken6(token);
                 break;
             case 7:
-                acionaToken7();
+                acionaToken7(); // FEITO
                 break;
             case 8:
-                acionaToken8();
+                acionaToken8(); // FEITO
                 break;
             case 9:
-                acionaToken9(token);
+                acionaToken9(token); // FEITO
                 break;
             case 10:
                 acionaToken10();
                 break;
             case 11:
-                acionaToken11(token);
+                acionaToken11(token); // FEITO
                 break;
             case 12:
-                acionaToken12(token);
+                acionaToken12(token); // FEITO
                 break;
             case 13:
-                acionaToken13();
+                acionaToken13(); // FEITO
                 break;
             case 14:
                 acionaToken14();
                 break;
             case 15:
-                acionaToken15();
+                acionaToken15(); // FEITO
                 break;
             case 16:
-                acionaToken16();
+                acionaToken16(); // FEITO
                 break;
             case 17:
                 acionaToken17();
                 break;
             case 18:
-                acionaToken18();
+                acionaToken18(); // FEITO
                 break;
             case 19:
-                acionaToken19();
+                acionaToken19(); // FEITO
                 break;
             case 20:
                 acionaToken20();
                 break;
             case 21:
-                acionaToken21();
+                acionaToken21(token); // FEITO
                 break;
             case 22:
-                acionaToken22();
+                acionaToken22(token); // FEITO
                 break;
         }
     }
 
-    private void acionaToken1() {
+    private void acionaToken1() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
+        if (!tipo1.equals(tipo2)) {
+            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
+        }
         if (tipo1.equals("float64") || tipo2.equals("float64")) {
             pilha.push("float64");
         } else {
@@ -100,9 +101,12 @@ public class Semantico implements Constants {
         joiner.add("add");
     }
 
-    private void acionaToken2() {
+    private void acionaToken2() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
+        if (!tipo1.equals(tipo2)) {
+            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
+        }
         if (tipo1.equals("float64") || tipo2.equals("float64")) {
             pilha.push("float64");
         } else {
@@ -111,9 +115,12 @@ public class Semantico implements Constants {
         joiner.add("sub");
     }
 
-    private void acionaToken3() {
+    private void acionaToken3() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
+        if (!tipo1.equals(tipo2)) {
+            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
+        }
         if (tipo1.equals("float64") || tipo2.equals("float64")) {
             pilha.push("float64");
         } else {
@@ -126,7 +133,7 @@ public class Semantico implements Constants {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
         if (!tipo1.equals(tipo2)) {
-            throw new SemanticError("ERRO SEMÂNTICO, PARAR");
+            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
         pilha.push(tipo1);
         joiner.add("div");
@@ -134,19 +141,28 @@ public class Semantico implements Constants {
 
     private void acionaToken5(Token token) {
         pilha.push("int64");
-        joiner.add("ldc.i8 " + token.getLexeme());
+        joiner.add("ldc.i8 " + converteToken(token));
         joiner.add("conv.r8");
+    }
+
+    
+    private String converteToken(Token token) {
+        // TODO: realizar conversão dos valores
+        if (token.getLexeme().matches("[1-9]+d[1-9]")) {
+            
+        }
+        return token.getLexeme();
     }
 
     private void acionaToken6(Token token) {
         pilha.push("int64");
-        joiner.add("ldc.r8 " + token.getLexeme());
+        joiner.add("ldc.r8 " + converteToken(token));
     }
 
     private void acionaToken7() throws SemanticError {
         String tipo = pilha.pop();
         if (!(tipo.equals("float64") || tipo.equals("int64"))) {
-            throw new SemanticError("ERRO SEMÂNTICO, PARAR");
+            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
         pilha.push(tipo);
     }
@@ -154,7 +170,7 @@ public class Semantico implements Constants {
     private void acionaToken8() throws SemanticError {
         String tipo = pilha.pop();
         if (!(tipo.equals("float64") || tipo.equals("int64"))) {
-            throw new SemanticError("ERRO SEMÂNTICO, PARAR");
+            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
         pilha.push(tipo);
         joiner.add("ldc.i8 -1");
@@ -163,26 +179,29 @@ public class Semantico implements Constants {
     }
 
     private void acionaToken9(Token token) {
-        operador = token.getLexeme().charAt(0);
+        operador = token.getLexeme();
     }
 
     private void acionaToken10() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
         if (!tipo1.equals(tipo2)) {
-            throw new SemanticError("ERRO SEMÂNTICO, PARAR");
+            throw new SemanticError("tipo(s) incompatível(is) em expressão relacional");
         }
         pilha.push("bool");
-        switch (operador) {
-            case '>':
-                joiner.add("cgt");
-                break;
-            case '<':
-                joiner.add("clt");
-                break;
-            default:
-                joiner.add("ceq");
+        if (operador.equals(">")) {
+            joiner.add("cgt");
+            return;
         }
+        if (operador.equals("<")) {
+            joiner.add("clt");
+            return;
+        }
+        if (operador.equals("==")) {
+            joiner.add("ceq");
+            return;
+        }
+        joiner.add("call int32 [mscorlib]System.String::Compare(string, string)");
     }
 
     private void acionaToken11(Token token) {
@@ -198,7 +217,7 @@ public class Semantico implements Constants {
     private void acionaToken13() throws SemanticError {
         String tipo = pilha.pop();
         if (!tipo.equals("bool")) {
-            throw new SemanticError("erro semântico, parar");
+            throw new SemanticError("tipo incompatível em expressão lógica");
         } 
         pilha.push("bool");
         joiner.add("ldc.i4.1");
@@ -210,7 +229,9 @@ public class Semantico implements Constants {
         if (tipo.equals("int64")) {
             joiner.add("conv.i8");
         }
-        joiner.add("call void [mscorlib]System.Console::Write(" + tipo + ")");
+        if (tipo.equals("char")) {
+            joiner.add(tipo);
+        }
     }
 
     private void acionaToken15() {
@@ -227,29 +248,64 @@ public class Semantico implements Constants {
         joiner.add("    }");
         joiner.add("}");
 
-        Path path = Paths.get("F:\\Users\\RBK\\Desktop\\teste.txt");
+        Path path = Paths.get("F:\\Users\\RBK\\Desktop\\teste2.il");
 
         
         BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
         writer.write(joiner.toString());
         writer.flush();
+        joiner = new StringJoiner("\n");
     }
 
     private void acionaToken17() {
+        String tipo = pilha.pop();
+
+        joiner.add("call void [mscorlib]System.Console::Write(" + tipo + ")");
     }
 
-    private void acionaToken18() {
+    private void acionaToken18() throws SemanticError {
+        String tipo1 = pilha.pop();
+        String tipo2 = pilha.pop();
+        if (!(tipo1.equals(tipo2) && tipo1.equals("bool") && tipo1.equals("bool"))) {
+            throw new SemanticError("tipo(s) incompatível(is) em expressão lógica");
+        }
+        joiner.add("and");
     }
 
-    private void acionaToken19() {
+    private void acionaToken19() throws SemanticError {
+        String tipo1 = pilha.pop();
+        String tipo2 = pilha.pop();
+        if (!(tipo1.equals(tipo2) && tipo1.equals("bool") && tipo1.equals("bool"))) {
+            throw new SemanticError("tipo(s) incompatível(is) em expressão lógica");
+        }
+        joiner.add("or");
     }
 
-    private void acionaToken20() {
+    private void acionaToken20() throws SemanticError {
+        String tipo1 = pilha.pop();
+        String tipo2 = pilha.pop();
+        if (!(tipo1.equals(tipo2))) {
+            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
+        }
+        if (tipo1.equals("float64") || tipo2.equals("float64")) {
+            pilha.push("float64");
+        } else {
+            pilha.push("int64");
+        }
+        joiner.add(tipo2);
     }
 
-    private void acionaToken21() {
+    private void acionaToken21(Token token) {
+        pilha.push("string");
+        joiner.add("ldstr " + converteTokenString(token));
     }
 
-    private void acionaToken22() {
+    private String converteTokenString(Token token) {
+        return token.getLexeme().replace("\\s", " ");
+    }
+
+    private void acionaToken22(Token token) {
+        pilha.push("string");
+        joiner.add("ldstr " + converteTokenString(token));
     }
 }
