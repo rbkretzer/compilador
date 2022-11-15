@@ -7,13 +7,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 import java.util.StringJoiner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Semantico implements Constants {
     private static StringJoiner joiner = new StringJoiner("\n");
     private static final Stack<String> pilha = new Stack<>();
     private String operador;
+    private String tipoWrite;
 
     public void executeAction(int action, Token token) throws SemanticError, IOException {
         System.out.println("Ação #" + action + ", Token: " + token);
@@ -90,9 +95,7 @@ public class Semantico implements Constants {
     private void acionaToken1() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
-        if (!tipo1.equals(tipo2)) {
-            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
-        }
+        validaTiposAritmetico(tipo1, tipo2);
         addAritmetico(tipo1, tipo2);
         joiner.add("add");
     }
@@ -100,9 +103,7 @@ public class Semantico implements Constants {
     private void acionaToken2() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
-        if (!tipo1.equals(tipo2)) {
-            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
-        }
+        validaTiposAritmetico(tipo1, tipo2);
         addAritmetico(tipo1, tipo2);
         joiner.add("sub");
     }
@@ -110,9 +111,7 @@ public class Semantico implements Constants {
     private void acionaToken3() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
-        if (!tipo1.equals(tipo2)) {
-            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
-        }
+        validaTiposAritmetico(tipo1, tipo2);
         addAritmetico(tipo1, tipo2);
         joiner.add("mul");
     }
@@ -120,11 +119,16 @@ public class Semantico implements Constants {
     private void acionaToken4() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
-        if (!tipo1.equals(tipo2)) {
-            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
-        }
+        validaTiposAritmetico(tipo1, tipo2);
         addAritmetico(tipo1, tipo2);
         joiner.add("div");
+    }
+
+    private void validaTiposAritmetico(String tipo1, String tipo2) throws SemanticError {
+        List<String> tiposValidos = Arrays.asList("float64", "int64");
+        if (!tiposValidos.contains(tipo1) || !tiposValidos.contains(tipo2)) {
+            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
+        }
     }
 
     private void addAritmetico(String tipo1, String tipo2) {
@@ -137,41 +141,64 @@ public class Semantico implements Constants {
 
     private void acionaToken5(Token token) {
         pilha.push("int64");
-        joiner.add("ldc.i8 " + converteToken(token));
+        joiner.add("ldc.i8 " + converteTokenInt64(token));
         joiner.add("conv.r8");
     }
 
     
-    private String converteToken(Token token) {
-        // TODO: realizar conversão dos valores
-        if (token.getLexeme().matches("[1-9]+d[1-9]")) {
-            
+    private String converteTokenInt64(Token token) {
+        if (!token.getLexeme().matches("[0-9]*[1-9]d[1-9][0-9]*")) {
+            return token.getLexeme();
         }
-        return token.getLexeme();
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(token.getLexeme());
+        
+        String prefix = matcher.group(0);
+        String base = matcher.group(1);
+        
+        Double value = Double.valueOf(prefix) * Math.pow(10l, Double.valueOf(base));
+        return String.valueOf(value.intValue());
     }
 
     private void acionaToken6(Token token) {
-        pilha.push("int64");
-        joiner.add("ldc.r8 " + converteToken(token));
+        pilha.push("flaot64");
+        joiner.add("ldc.r8 " + converteTokenFloat64(token));
+    }
+
+    private String converteTokenFloat64(Token token) {
+        String lexeme = token.getLexeme();
+        if (!lexeme.matches("[0-9]*.[0-9]*[1-9]d[1-9][0-9]*")) {
+            return lexeme;
+        }
+        Pattern pattern = Pattern.compile("[0-9]+.[0-9]+");
+        Matcher matcher = pattern.matcher(lexeme);
+        
+        String prefix = matcher.group(0);
+        String base = lexeme.substring(lexeme.indexOf(prefix), lexeme.length() - 1);
+        
+        Double value = Double.valueOf(prefix) * Math.pow(10l, Double.valueOf(base));
+        return String.valueOf(value.intValue());
     }
 
     private void acionaToken7() throws SemanticError {
         String tipo = pilha.pop();
-        if (!(tipo.equals("float64") || tipo.equals("int64"))) {
-            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
-        }
+        validaTipoAritmeticoUnico(tipo);
         pilha.push(tipo);
     }
 
     private void acionaToken8() throws SemanticError {
         String tipo = pilha.pop();
-        if (!(tipo.equals("float64") || tipo.equals("int64"))) {
-            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
-        }
+        validaTipoAritmeticoUnico(tipo);
         pilha.push(tipo);
         joiner.add("ldc.i8 -1");
         joiner.add("conv.r8");
         joiner.add("mul");
+    }
+
+    private void validaTipoAritmeticoUnico(String tipo) throws SemanticError {
+        if (!(tipo.equals("float64") || tipo.equals("int64"))) {
+            throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
+        }
     }
 
     private void acionaToken9(Token token) {
@@ -212,21 +239,25 @@ public class Semantico implements Constants {
 
     private void acionaToken13() throws SemanticError {
         String tipo = pilha.pop();
-        if (!tipo.equals("bool")) {
-            throw new SemanticError("tipo incompatível em expressão lógica");
-        } 
+        validaSeBooleano(tipo); 
         pilha.push("bool");
         joiner.add("ldc.i4.1");
         joiner.add("xor");
     }
 
+    private void validaSeBooleano(String tipo) throws SemanticError {
+        if (!tipo.equals("bool")) {
+            throw new SemanticError("ipo(s) incompatível(is) em expressão lógica");
+        }
+    }
+
     private void acionaToken14() {
-        String tipo = pilha.pop();
-        if (tipo.equals("int64")) {
+        tipoWrite = pilha.pop();
+        if (tipoWrite.equals("int64")) {
             joiner.add("conv.i8");
         }
-        if (tipo.equals("char")) {
-            joiner.add(tipo);
+        if (tipoWrite.equals("char")) {
+            joiner.add("string");
         }
     }
 
@@ -244,26 +275,22 @@ public class Semantico implements Constants {
         joiner.add("    }");
         joiner.add("}");
 
-        Path path = Paths.get("F:\\Users\\RBK\\Desktop\\teste2.il");
-
+        Path path = Paths.get("E:\\Users\\RBK\\Desktop\\teste.il");
         
         BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
         writer.write(joiner.toString());
-        writer.flush();
+        writer.close();
         joiner = new StringJoiner("\n");
     }
 
     private void acionaToken17() {
-        String tipo = pilha.pop();
-        joiner.add("call void [mscorlib]System.Console::Write(" + tipo + ")");
+        joiner.add("call void [mscorlib]System.Console::Write(" + tipoWrite + ")");
     }
 
     private void acionaToken18() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
-        if (!(tipo1.equals(tipo2) && tipo1.equals("bool") && tipo1.equals("bool"))) {
-            throw new SemanticError("tipo(s) incompatível(is) em expressão lógica");
-        }
+        validaTipoLogico(tipo1, tipo2);
         pilha.push("bool");
         joiner.add("and");
     }
@@ -271,11 +298,15 @@ public class Semantico implements Constants {
     private void acionaToken19() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
+        validaTipoLogico(tipo1, tipo2);
+        pilha.push("bool");
+        joiner.add("or");
+    }
+
+    private void validaTipoLogico(String tipo1, String tipo2) throws SemanticError {
         if (!(tipo1.equals(tipo2) && tipo1.equals("bool") && tipo1.equals("bool"))) {
             throw new SemanticError("tipo(s) incompatível(is) em expressão lógica");
         }
-        pilha.push("bool");
-        joiner.add("or");
     }
 
     private void acionaToken20() throws SemanticError {
