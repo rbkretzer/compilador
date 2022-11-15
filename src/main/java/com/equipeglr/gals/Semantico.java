@@ -19,16 +19,16 @@ public class Semantico implements Constants {
         System.out.println("Ação #" + action + ", Token: " + token);
         switch (action) {
             case 1:
-                acionaToken1(); // FEITO
+                acionaToken1();
                 break;
             case 2:
-                acionaToken2(); // FEITO
+                acionaToken2();
                 break;
             case 3:
-                acionaToken3(); // FEITO
+                acionaToken3();
                 break;
             case 4:
-                acionaToken4(); // FEITO
+                acionaToken4();
                 break;
             case 5:
                 acionaToken5(token);
@@ -37,52 +37,52 @@ public class Semantico implements Constants {
                 acionaToken6(token);
                 break;
             case 7:
-                acionaToken7(); // FEITO
+                acionaToken7();
                 break;
             case 8:
-                acionaToken8(); // FEITO
+                acionaToken8();
                 break;
             case 9:
-                acionaToken9(token); // FEITO
+                acionaToken9(token);
                 break;
             case 10:
                 acionaToken10();
                 break;
             case 11:
-                acionaToken11(token); // FEITO
+                acionaToken11(token);
                 break;
             case 12:
-                acionaToken12(token); // FEITO
+                acionaToken12(token);
                 break;
             case 13:
-                acionaToken13(); // FEITO
+                acionaToken13();
                 break;
             case 14:
                 acionaToken14();
                 break;
             case 15:
-                acionaToken15(); // FEITO
+                acionaToken15();
                 break;
             case 16:
-                acionaToken16(); // FEITO
+                acionaToken16();
                 break;
             case 17:
                 acionaToken17();
                 break;
             case 18:
-                acionaToken18(); // FEITO
+                acionaToken18();
                 break;
             case 19:
-                acionaToken19(); // FEITO
+                acionaToken19();
                 break;
             case 20:
                 acionaToken20();
                 break;
             case 21:
-                acionaToken21(token); // FEITO
+                acionaToken21(token);
                 break;
             case 22:
-                acionaToken22(token); // FEITO
+                acionaToken22(token);
                 break;
         }
     }
@@ -93,11 +93,7 @@ public class Semantico implements Constants {
         if (!tipo1.equals(tipo2)) {
             throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
-        if (tipo1.equals("float64") || tipo2.equals("float64")) {
-            pilha.push("float64");
-        } else {
-            pilha.push("int64");
-        }
+        addAritmetico(tipo1, tipo2);
         joiner.add("add");
     }
 
@@ -107,11 +103,7 @@ public class Semantico implements Constants {
         if (!tipo1.equals(tipo2)) {
             throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
-        if (tipo1.equals("float64") || tipo2.equals("float64")) {
-            pilha.push("float64");
-        } else {
-            pilha.push("int64");
-        }
+        addAritmetico(tipo1, tipo2);
         joiner.add("sub");
     }
 
@@ -121,11 +113,7 @@ public class Semantico implements Constants {
         if (!tipo1.equals(tipo2)) {
             throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
-        if (tipo1.equals("float64") || tipo2.equals("float64")) {
-            pilha.push("float64");
-        } else {
-            pilha.push("int64");
-        }
+        addAritmetico(tipo1, tipo2);
         joiner.add("mul");
     }
 
@@ -135,8 +123,16 @@ public class Semantico implements Constants {
         if (!tipo1.equals(tipo2)) {
             throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
-        pilha.push(tipo1);
+        addAritmetico(tipo1, tipo2);
         joiner.add("div");
+    }
+
+    private void addAritmetico(String tipo1, String tipo2) {
+        if (tipo1.equals("float64") || tipo2.equals("float64")) {
+            pilha.push("float64");
+        } else {
+            pilha.push("int64");
+        }
     }
 
     private void acionaToken5(Token token) {
@@ -259,7 +255,6 @@ public class Semantico implements Constants {
 
     private void acionaToken17() {
         String tipo = pilha.pop();
-
         joiner.add("call void [mscorlib]System.Console::Write(" + tipo + ")");
     }
 
@@ -269,6 +264,7 @@ public class Semantico implements Constants {
         if (!(tipo1.equals(tipo2) && tipo1.equals("bool") && tipo1.equals("bool"))) {
             throw new SemanticError("tipo(s) incompatível(is) em expressão lógica");
         }
+        pilha.push("bool");
         joiner.add("and");
     }
 
@@ -278,6 +274,7 @@ public class Semantico implements Constants {
         if (!(tipo1.equals(tipo2) && tipo1.equals("bool") && tipo1.equals("bool"))) {
             throw new SemanticError("tipo(s) incompatível(is) em expressão lógica");
         }
+        pilha.push("bool");
         joiner.add("or");
     }
 
@@ -287,11 +284,7 @@ public class Semantico implements Constants {
         if (!(tipo1.equals(tipo2))) {
             throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
-        if (tipo1.equals("float64") || tipo2.equals("float64")) {
-            pilha.push("float64");
-        } else {
-            pilha.push("int64");
-        }
+        addAritmetico(tipo1, tipo2);
         joiner.add(tipo2);
     }
 
