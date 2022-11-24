@@ -29,15 +29,22 @@ public class TelaController {
 
     @FXML
     private Label labelStatus;
+
     @FXML
     private TextArea areaMensagem;
+
     @FXML
     private TextArea areaCodigo;
+
     @FXML
     private TextArea linhas;
+
     @FXML
     private Label labelLinhas;
+
     private static final FileChooser ufc = new FileChooser();
+
+    private String pathToCompile;
 
     public void initialize() {
         linhas.setText(String.valueOf(areaCodigo.getParagraphs().size()));
@@ -60,9 +67,8 @@ public class TelaController {
         Lexico lexico = new Lexico();
         Sintatico sintatico = new Sintatico();
         Semantico semantico = new Semantico();
+        semantico.setPath(pathToCompile);
         lexico.setInput(areaCodigo.getText());
-        List<String[]> tabelaLexemas = new ArrayList<>();
-        tabelaLexemas.add(new String[] { "Linha", "Classe", "Lexema" });
         new Thread(() -> {
             try {
                 sintatico.parse(lexico, semantico);
@@ -75,9 +81,9 @@ public class TelaController {
                                 : "")
                         + " " + e.getMessage());
             } catch (SyntaticError e) {
-                Token tokoenAtual = sintatico.getToken();
-                areaMensagem.setText("Erro na linha " + getLinha(tokoenAtual.getPosition()) + " - encontrado "
-                        + parseIfEOF(tokoenAtual.getLexeme()) + " esperado " + e.getMessage());
+                Token tokenAtual = sintatico.getToken();
+                areaMensagem.setText("Erro na linha " + getLinha(tokenAtual.getPosition()) + " - encontrado "
+                        + parseIfEOF(tokenAtual.getLexeme()) + " esperado " + e.getMessage());
             } catch (SemanticError e) {
                 Token tokoenAtual = sintatico.getToken();
                 areaMensagem.setText("Erro na linha " + getLinha(tokoenAtual.getPosition()) + " - " + e.getMessage());
@@ -120,6 +126,7 @@ public class TelaController {
             String s = Files.readString(selectedFile.toPath(), StandardCharsets.UTF_8);
             areaCodigo.setText(s);
             labelStatus.setText(selectedFile.getAbsolutePath());
+            pathToCompile = selectedFile.getAbsolutePath();
             adicionarLinhas();
         }
     }
@@ -180,6 +187,7 @@ public class TelaController {
         }
         arquivo.createNewFile();
         labelStatus.setText(arquivo.getAbsolutePath());
+        pathToCompile = arquivo.getAbsolutePath();
     }
 
     public void copiarTexto() {

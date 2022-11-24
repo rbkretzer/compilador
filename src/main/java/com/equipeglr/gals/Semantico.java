@@ -18,7 +18,7 @@ public class Semantico implements Constants {
     private static StringJoiner joiner = new StringJoiner("\n");
     private static final Stack<String> pilha = new Stack<>();
     private String operador;
-    private String tipoWrite;
+    private String pathToCompile;
 
     public void executeAction(int action, Token token) throws SemanticError, IOException {
         System.out.println("Ação #" + action + ", Token: " + token);
@@ -161,7 +161,7 @@ public class Semantico implements Constants {
     }
 
     private void acionaToken6(Token token) {
-        pilha.push("flaot64");
+        pilha.push("float64");
         joiner.add("ldc.r8 " + converteTokenFloat64(token));
     }
 
@@ -252,13 +252,14 @@ public class Semantico implements Constants {
     }
 
     private void acionaToken14() {
-        tipoWrite = pilha.pop();
+        String tipoWrite = pilha.pop();
         if (tipoWrite.equals("int64")) {
             joiner.add("conv.i8");
         }
         if (tipoWrite.equals("char")) {
             joiner.add("string");
         }
+        joiner.add("call void [mscorlib]System.Console::Write(" + tipoWrite + ")");
     }
 
     private void acionaToken15() {
@@ -275,7 +276,8 @@ public class Semantico implements Constants {
         joiner.add("    }");
         joiner.add("}");
 
-        Path path = Paths.get("E:\\Users\\RBK\\Desktop\\teste.il");
+        pathToCompile = pathToCompile.replace(".txt", ".il");
+        Path path = Paths.get(pathToCompile);
         
         BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
         writer.write(joiner.toString());
@@ -284,7 +286,8 @@ public class Semantico implements Constants {
     }
 
     private void acionaToken17() {
-        joiner.add("call void [mscorlib]System.Console::Write(" + tipoWrite + ")");
+        joiner.add("ldstr " + "\"\\n\"");
+        joiner.add("call void [mscorlib]System.Console::Write(string)");
     }
 
     private void acionaToken18() throws SemanticError {
@@ -331,5 +334,9 @@ public class Semantico implements Constants {
     private void acionaToken22(Token token) {
         pilha.push("string");
         joiner.add("ldstr " + converteTokenString(token));
+    }
+
+    public void setPath(String pathToCompile) {
+        this.pathToCompile = pathToCompile;
     }
 }
