@@ -7,8 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
@@ -17,6 +20,9 @@ import java.util.regex.Pattern;
 public class Semantico implements Constants {
     private static StringJoiner joiner = new StringJoiner("\n");
     private static final Stack<String> pilha = new Stack<>();
+    private Map<String, String> tabelaSimbolos = new HashMap<>();
+    private String tipoVar;
+    private List<String> listaId = new ArrayList<>();
     private String operador;
     private String pathToCompile;
 
@@ -88,6 +94,39 @@ public class Semantico implements Constants {
                 break;
             case 22:
                 acionaToken22(token);
+                break;
+            case 24:
+                acionaToken24();
+                break;
+            case 25:
+                acionaToken25();
+                break;
+            case 26:
+                acionaToken26();
+                break;
+            case 27:
+                acionaToken27();
+                break;
+            case 28:
+                acionaToken28();
+                break;
+            case 30:
+                acionaToken30(token);
+                break;
+            case 31:
+                acionaToken31();
+                break;
+            case 32:
+                acionaToken32(token);
+                break;
+            case 33:
+                acionaToken33(token);
+                break;
+            case 34:
+                acionaToken34();
+                break;
+            case 35:
+                acionaToken35();
                 break;
         }
     }
@@ -334,6 +373,79 @@ public class Semantico implements Constants {
     private void acionaToken22(Token token) {
         pilha.push("string");
         joiner.add("ldstr " + converteTokenString(token));
+    }
+
+    private void acionaToken24(){
+    }
+
+    private void acionaToken25(){
+    }
+
+    private void acionaToken26(){
+    }
+
+    private void acionaToken27(){
+    }
+
+    private void acionaToken28(){
+    }
+
+    private void acionaToken30(Token token){
+        if((token.getLexeme()).equals("int")) {
+            tipoVar = "int64";
+        }
+        if((token.getLexeme()).equals("real")) {
+            tipoVar = "float64"; 
+        }
+    }
+
+    private void acionaToken31(){
+        for(String id : listaId){
+            tabelaSimbolos.put(id, tipoVar);
+            joiner.add(".locals ("+ tipoVar + " " + id +")");
+        }
+        listaId.clear();
+    }
+
+    private void acionaToken32(Token token){
+        listaId.add(token.getLexeme());
+    }
+
+    private void acionaToken33(Token token){
+        String id = token.getLexeme();
+        String tipoId = tabelaSimbolos.get(id);
+        pilha.push(tipoId);
+        joiner.add("ldloc " + id);
+        if (tipoId.equals("int64")){
+            joiner.add("conv.r8");
+        }
+    }
+
+    private void acionaToken34(){
+        String id = listaId.remove(0);
+        String tipoId = tabelaSimbolos.get(id);
+        String tipoExp = pilha.pop(); 
+        if(tipoId.equals("int64")){
+            joiner.add("conv.r8");
+        }
+        joiner.add("stloc " + id);
+    }
+
+    private void acionaToken35(){
+        String classe = "";
+        for(String id : listaId){
+            String tipoId = tabelaSimbolos.get(id);
+            if(tipoId.equals("int64")){
+                classe = "Int64";
+            }
+            if(tipoId.equals("float64")){
+                classe = "Double";
+            }
+            joiner.add("call string [mscorlib] System.Console::ReadLine()");
+            joiner.add("call " + tipoId + " [mscorlib] System." + classe + "::Parse(string)");
+            joiner.add("stloc " + id);
+        }
+        listaId.clear();
     }
 
     public void setPath(String pathToCompile) {
