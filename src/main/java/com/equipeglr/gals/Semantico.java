@@ -20,6 +20,8 @@ import java.util.regex.Pattern;
 public class Semantico implements Constants {
     private static StringJoiner joiner = new StringJoiner("\n");
     private static final Stack<String> pilha = new Stack<>();
+    private static final Stack<String> pilhaRotulos = new Stack<>();
+    private int numeroRotulo = 0;
     private Map<String, String> tabelaSimbolos = new HashMap<>();
     private String tipoVar;
     private List<String> listaId = new ArrayList<>();
@@ -307,12 +309,12 @@ public class Semantico implements Constants {
         joiner.add(".module   _codigo_objeto.exe");
         joiner.add(".class public _UNICA{");
         joiner.add(".method static public void _principal() {");
-        joiner.add("    .entrypoint");
+        joiner.add(".entrypoint");
     }
 
     private void acionaToken16() throws IOException {
-        joiner.add("    ret");
-        joiner.add("    }");
+        joiner.add("ret");
+        joiner.add("}");
         joiner.add("}");
 
         pathToCompile = pathToCompile.replace(".txt", ".il");
@@ -375,19 +377,31 @@ public class Semantico implements Constants {
         joiner.add("ldstr " + converteTokenString(token));
     }
 
-    private void acionaToken24(){
+    private void acionaToken24() {
+        numeroRotulo++;
+        joiner.add("brfalse label" + numeroRotulo);
+        pilhaRotulos.push("label" + numeroRotulo);
     }
 
     private void acionaToken25(){
+        numeroRotulo++;
+        joiner.add("br label" + numeroRotulo);
+        joiner.add(pilhaRotulos.pop() + ":");
+        pilhaRotulos.push("label" + numeroRotulo);
     }
 
     private void acionaToken26(){
+        joiner.add(pilhaRotulos.pop() + ":");
     }
 
-    private void acionaToken27(){
+    private void acionaToken27() {
+        numeroRotulo++;
+        joiner.add("label" + numeroRotulo + ":");
+        pilhaRotulos.push("label" + numeroRotulo);
     }
 
     private void acionaToken28(){
+        joiner.add("brfalse " + pilhaRotulos.pop());
     }
 
     private void acionaToken30(Token token){
