@@ -402,7 +402,7 @@ public class Semantico implements Constants {
     }
 
     private void acionaToken28(){
-        joiner.add("brfalse " + pilhaRotulos.pop());
+        joiner.add("brtrue " + pilhaRotulos.pop());
     }
 
     private void acionaToken30(Token token){
@@ -456,8 +456,8 @@ public class Semantico implements Constants {
             if(tipoId.equals("float64")){
                 classe = "Double";
             }
-            joiner.add("call string [mscorlib] System.Console::ReadLine()");
-            joiner.add("call " + tipoId + " [mscorlib] System." + classe + "::Parse(string)");
+            joiner.add("call string [mscorlib]System.Console::ReadLine()");
+            joiner.add("call " + tipoId + " [mscorlib]System." + classe + "::Parse(string)");
             joiner.add("stloc " + id);
         }
         listaId.clear();
