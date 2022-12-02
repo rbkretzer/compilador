@@ -306,7 +306,8 @@ public class Semantico implements Constants {
     private void acionaToken15() {
         joiner.add(".assembly extern mscorlib {}");
         joiner.add(".assembly _codigo_objeto{}");
-        joiner.add(".module   _codigo_objeto.exe");
+        joiner.add(".module _codigo_objeto.exe");
+        joiner.add("");
         joiner.add(".class public _UNICA{");
         joiner.add(".method static public void _principal() {");
         joiner.add(".entrypoint");
@@ -379,15 +380,15 @@ public class Semantico implements Constants {
 
     private void acionaToken24() {
         numeroRotulo++;
-        joiner.add("brfalse label" + numeroRotulo);
-        pilhaRotulos.push("label" + numeroRotulo);
+        joiner.add("brfalse nr_" + numeroRotulo);
+        pilhaRotulos.push("nr_" + numeroRotulo);
     }
 
     private void acionaToken25(){
         numeroRotulo++;
-        joiner.add("br label" + numeroRotulo);
+        joiner.add("br nr_" + numeroRotulo);
         joiner.add(pilhaRotulos.pop() + ":");
-        pilhaRotulos.push("label" + numeroRotulo);
+        pilhaRotulos.push("nr_" + numeroRotulo);
     }
 
     private void acionaToken26(){
@@ -396,8 +397,8 @@ public class Semantico implements Constants {
 
     private void acionaToken27() {
         numeroRotulo++;
-        joiner.add("label" + numeroRotulo + ":");
-        pilhaRotulos.push("label" + numeroRotulo);
+        joiner.add("nr_" + numeroRotulo + ":");
+        pilhaRotulos.push("nr_" + numeroRotulo);
     }
 
     private void acionaToken28(){
@@ -408,7 +409,7 @@ public class Semantico implements Constants {
         if((token.getLexeme()).equals("int")) {
             tipoVar = "int64";
         }
-        if((token.getLexeme()).equals("real")) {
+        if((token.getLexeme()).equals("float")) {
             tipoVar = "float64"; 
         }
     }
@@ -440,7 +441,7 @@ public class Semantico implements Constants {
         String tipoId = tabelaSimbolos.get(id);
         String tipoExp = pilha.pop(); 
         if(tipoId.equals("int64")){
-            joiner.add("conv.r8");
+            joiner.add("conv.i8");
         }
         joiner.add("stloc " + id);
     }
