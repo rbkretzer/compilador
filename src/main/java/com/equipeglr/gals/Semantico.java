@@ -1,12 +1,8 @@
 package com.equipeglr.gals;
 
-import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.StringJoiner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Semantico implements Constants {
     private static StringJoiner joiner = new StringJoiner("\n");
@@ -191,11 +185,9 @@ public class Semantico implements Constants {
         if (!token.getLexeme().matches("[0-9]*[1-9]d[1-9][0-9]*")) {
             return token.getLexeme();
         }
-        Pattern pattern = Pattern.compile("[0-9]+");
-        Matcher matcher = pattern.matcher(token.getLexeme());
-        
-        String prefix = matcher.group(0);
-        String base = matcher.group(1);
+        String[] found = token.getLexeme().split("d");
+        String prefix = found[0];
+        String base = found[1];
         
         Double value = Double.valueOf(prefix) * Math.pow(10l, Double.valueOf(base));
         return String.valueOf(value.intValue());
@@ -208,17 +200,18 @@ public class Semantico implements Constants {
 
     private String converteTokenFloat64(Token token) {
         String lexeme = token.getLexeme();
+        if (lexeme.charAt(0) == '.') {
+            lexeme = "0" + lexeme;
+        }
         if (!lexeme.matches("[0-9]*.[0-9]*[1-9]d[1-9][0-9]*")) {
             return lexeme;
         }
-        Pattern pattern = Pattern.compile("[0-9]+.[0-9]+");
-        Matcher matcher = pattern.matcher(lexeme);
-        
-        String prefix = matcher.group(0);
-        String base = lexeme.substring(lexeme.indexOf(prefix), lexeme.length() - 1);
+        String[] found = lexeme.split("d");
+        String prefix = found[0];
+        String base = found[1];
         
         Double value = Double.valueOf(prefix) * Math.pow(10l, Double.valueOf(base));
-        return String.valueOf(value.intValue());
+        return String.valueOf(value);
     }
 
     private void acionaToken7() throws SemanticError {
@@ -261,11 +254,12 @@ public class Semantico implements Constants {
             joiner.add("clt");
             return;
         }
+        joiner.add("ceq");
         if (operador.equals("==")) {
-            joiner.add("ceq");
             return;
         }
-        joiner.add("call int32 [mscorlib]System.String::Compare(string, string)");
+        joiner.add("ldc.i4 0");
+        joiner.add("ceq");
     }
 
     private void acionaToken11(Token token) {
@@ -319,9 +313,8 @@ public class Semantico implements Constants {
         joiner.add("}");
 
         pathToCompile = pathToCompile.replace(".txt", ".il");
-        Path path = Paths.get(pathToCompile);
         
-        BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+        FileWriter writer = new FileWriter(pathToCompile, StandardCharsets.UTF_8, false);
         writer.write(joiner.toString());
         writer.close();
         joiner = new StringJoiner("\n");
@@ -361,7 +354,15 @@ public class Semantico implements Constants {
             throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
         addAritmetico(tipo1, tipo2);
-        joiner.add(tipo2);
+        // if (tipo2.equals("float64")) {
+        //     pilha.push("float64");
+        // } else {
+        //     pilha.push("int64");
+        // }
+        joiner.add("div");
+        joiner.add("dup");
+        joiner.add("mul");
+        joiner.add("sub");
     }
 
     private void acionaToken21(Token token) {

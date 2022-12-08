@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.IntStream;
 
 import com.equipeglr.gals.LexicalError;
@@ -67,10 +65,10 @@ public class TelaController {
         Lexico lexico = new Lexico();
         Sintatico sintatico = new Sintatico();
         Semantico semantico = new Semantico();
-        semantico.setPath(pathToCompile);
         lexico.setInput(areaCodigo.getText());
         new Thread(() -> {
             try {
+                semantico.setPath(pathToCompile);
                 sintatico.parse(lexico, semantico);
                 areaMensagem.appendText("Programa compilado com sucesso");
             } catch (LexicalError e) {
@@ -88,7 +86,7 @@ public class TelaController {
                 Token tokoenAtual = sintatico.getToken();
                 areaMensagem.setText("Erro na linha " + getLinha(tokoenAtual.getPosition()) + " - " + e.getMessage());
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                areaMensagem.setText("Erro ao salvar o arquivo compilado: " + e.getMessage());
             }
         }).start();
 
