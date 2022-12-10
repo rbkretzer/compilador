@@ -305,6 +305,8 @@ public class Semantico implements Constants {
         joiner.add(".class public _UNICA{");
         joiner.add(".method static public void _principal() {");
         joiner.add(".entrypoint");
+        joiner.add(".locals (int64 dividendo)");
+        joiner.add(".locals (int64 divisor)");
     }
 
     private void acionaToken16() throws IOException {
@@ -350,17 +352,33 @@ public class Semantico implements Constants {
     private void acionaToken20() throws SemanticError {
         String tipo1 = pilha.pop();
         String tipo2 = pilha.pop();
-        if (!(tipo1.equals(tipo2))) {
+        if (!tipo1.equals("int64") || !tipo2.equals("int64")) {
             throw new SemanticError("tipo(s) incompatível(is) em expressão aritmética");
         }
         addAritmetico(tipo1, tipo2);
-        // if (tipo2.equals("float64")) {
-        //     pilha.push("float64");
-        // } else {
-        //     pilha.push("int64");
-        // }
+    
+        joiner.add("conv.i8");
+        joiner.add("stloc divisor");
+        
+        joiner.add("conv.i8");
+        joiner.add("stloc dividendo");
+        
+        joiner.add("ldloc dividendo");
+        joiner.add("conv.r8");
+
+        joiner.add("ldloc dividendo");
+        joiner.add("conv.r8");
+        
+        joiner.add("ldloc divisor");
+        joiner.add("conv.r8");
+        
         joiner.add("div");
-        joiner.add("dup");
+        joiner.add("conv.i8");
+        joiner.add("conv.r8");
+
+        joiner.add("ldloc divisor");
+        joiner.add("conv.r8");
+        
         joiner.add("mul");
         joiner.add("sub");
     }
@@ -424,17 +442,24 @@ public class Semantico implements Constants {
     }
 
     private void acionaToken32(Token token){
-        listaId.add(token.getLexeme());
+        listaId.add(converteId(token.getLexeme()));
     }
 
     private void acionaToken33(Token token){
-        String id = token.getLexeme();
+        String id = converteId(token.getLexeme());
         String tipoId = tabelaSimbolos.get(id);
         pilha.push(tipoId);
         joiner.add("ldloc " + id);
         if (tipoId.equals("int64")){
             joiner.add("conv.r8");
         }
+    }
+
+    private String converteId(String lexeme) {
+        if (lexeme.equals("dividendo") || lexeme.equals("divisor")) {
+            return lexeme.concat("_compiled");
+        }
+        return lexeme;
     }
 
     private void acionaToken34(){
